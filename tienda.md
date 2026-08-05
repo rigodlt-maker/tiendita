@@ -1,7 +1,7 @@
 # 🍬 Tienda Indi — Bitácora del Proyecto
 
-> **Versión:** v1.0
-> **Última actualización:** Sesión 1 — Setup inicial
+> **Versión:** v1.1
+> **Última actualización:** Sesión 2 — Módulo Vender (escáner + carrito + cierre de venta)
 > **Stack:** JavaScript Vanilla (ES Modules) + Firebase Firestore + PWA + GitHub Pages
 
 ---
@@ -67,8 +67,8 @@ El fiado es una venta con `estatus_pago: "Pendiente"` asociada a un compañero, 
 
 | Librería | Vía | Uso |
 |---|---|---|
-| Firebase (App + Firestore) v10 | CDN ESM (`gstatic.com/firebasejs`) | Base de datos en tiempo real, sin build step |
-| html5-qrcode | CDN (`unpkg.com/html5-qrcode`) | Escaneo de cámara para EAN/QR (pendiente de integrar) |
+| Firebase (App + Firestore) v10.13.2 | CDN ESM (`gstatic.com/firebasejs`) | Base de datos en tiempo real, sin build step |
+| html5-qrcode v2.3.8 | CDN (`unpkg.com/html5-qrcode`) — script clásico, expone `window.Html5Qrcode` | Escaneo de cámara para EAN-13/8, UPC-A/E, CODE128 y QR |
 | Google Fonts: Baloo 2 / Inter / Space Grotesk | CDN | Sistema tipográfico (ver Diseño) |
 | Ninguna otra dependencia — JS Vanilla puro, sin frameworks ni bundler | — | Compatible 1:1 con GitHub Pages |
 
@@ -96,21 +96,25 @@ El fiado es una venta con `estatus_pago: "Pendiente"` asociada a un compañero, 
 - [x] Inicialización de Firebase (App + Firestore) vía ESM/CDN con la config del proyecto `tiendindi15`
 - [x] `manifest.json` + registro de Service Worker básico (offline shell)
 - [x] Sistema de diseño (tokens CSS) aplicado
+- [x] Íconos PWA reales (192×192 / 512×512), generados con la identidad de marca (moneda + signo de pesos)
+- [x] **Alta inicial de compañeros** (`js/companeros.js`): seed idempotente de los 15 nombres reales al arrancar la app, sin pisar saldos existentes
+- [x] **Escáner de cámara** (`js/scanner.js`): wrapper de `html5-qrcode`, soporta EAN-13/8, UPC-A/E, CODE128 y QR, con debounce para no duplicar lecturas
+- [x] **Carrito de venta** (`js/ventas.js`): agregar/quitar productos, validación de stock disponible, cálculo de total y utilidad
+- [x] **Alta rápida de producto** (`js/productos.js` + modal): si el código escaneado no existe en `productos`, se pide nombre/costo/precio/stock inicial y se crea al vuelo
+- [x] **Cierre de venta** (checkout): botones `[PAGADO EN EFECTIVO]` y `[A LA CUENTA DE...]` con selector de compañero (muestra su saldo actual como referencia)
+- [x] **Escritura transaccional en Firestore**: `writeBatch` que en una sola operación atómica crea la `venta` (con `detalle_productos` histórico), decrementa `stock_actual` de cada producto y, si es fiado, incrementa `saldo_pendiente` del compañero
+- [x] UI de módulo Vender completa: botón de escaneo, lector embebido, lista de carrito con +/-, píldora flotante de total, toasts de feedback
 
 ## 6. To-Do (próximas sesiones) 📋
 
-- [ ] Integrar `html5-qrcode`: lectura de cámara → búsqueda en `productos` → agregar a carrito
-- [ ] Lógica de carrito en memoria + render dinámico
-- [ ] Botones de cierre de venta: `[PAGADO EN EFECTIVO]` vs `[A LA CUENTA DE...]` (selector de `companeros`)
-- [ ] Escritura transaccional en Firestore: crear `venta`, decrementar `stock_actual`, incrementar `saldo_pendiente` si aplica
 - [ ] Vista de Deudas: listado por compañero, detalle expandible de productos/fecha, botón "Liquidar deuda" (batch update de ventas pendientes → "Pagado" + reset de `saldo_pendiente`)
 - [ ] Módulo de Reposición: form de costo total + piezas → cálculo de costo promedio ponderado → update de `productos` + registro en `reposiciones`
 - [ ] Dashboard: cálculo en tiempo real de Capital Invertido / Recuperado / Utilidad (queries agregadas sobre `ventas` y `reposiciones`)
-- [ ] Alta de productos nuevos (cuando el escáner no encuentra el EAN)
-- [ ] Alta/edición de compañeros
-- [ ] Reglas de seguridad de Firestore (`firestore.rules`)
-- [ ] Íconos PWA reales (192x192 / 512x512) — placeholders pendientes
-- [ ] Manejo de estado de conexión (offline queue para ventas sin señal)
+- [ ] Alta/edición manual de compañeros (por ahora solo vía seed inicial)
+- [ ] Edición de productos existentes desde una vista de catálogo (hoy solo se crean por alta rápida al escanear)
+- [ ] Reglas de seguridad de Firestore (`firestore.rules`) — hoy están abiertas para desarrollo
+- [ ] Manejo de estado de conexión (offline queue para ventas sin señal — Firestore ya cachea lecturas, falta UX de "venta pendiente de sincronizar")
+- [ ] Alerta visual de stock bajo (`alerta_stock`) en el catálogo
 
 ---
 
@@ -137,7 +141,10 @@ El fiado es una venta con `estatus_pago: "Pendiente"` asociada a un compañero, 
 3. La URL quedará como `https://<tu-usuario>.github.io/tienda-indi/`.
 4. **Importante:** la cámara (`getUserMedia`) solo funciona en **HTTPS** o `localhost` — GitHub Pages sirve en HTTPS por defecto, así que el escáner funcionará sin configuración extra.
 
-### 7.3 Pruebas locales
+### 7.3 Estructura de archivos (nota de nombres)
+La app "real" vive en **`tienda.html`** (no `index.html`), para que sea fácil de distinguir de otras apps en tu editor/pestañas. Se dejó un `index.html` mínimo en la raíz que solo redirige a `tienda.html`, porque GitHub Pages siempre busca `index.html` como punto de entrada del dominio. Resultado: entras a la URL raíz normal y caes en `tienda.html` automáticamente — no necesitas escribir el nombre completo.
+
+### 7.4 Pruebas locales
 - No se puede abrir `index.html` con doble clic (los módulos ES + la cámara requieren un servidor). Usar, por ejemplo:
   ```
   npx serve .

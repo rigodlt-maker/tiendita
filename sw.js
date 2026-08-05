@@ -1,12 +1,18 @@
 // sw.js — cache básico del app-shell. La lógica de datos (Firestore)
 // NO se cachea aquí; Firestore ya maneja su propia persistencia offline.
-const CACHE_NAME = "tienda-indi-shell-v1";
+const CACHE_NAME = "tienda-indi-shell-v3";
 const SHELL_FILES = [
   "./",
   "./index.html",
+  "./tienda.html",
   "./css/style.css",
   "./js/app.js",
   "./js/firebase-config.js",
+  "./js/companeros.js",
+  "./js/productos.js",
+  "./js/scanner.js",
+  "./js/ventas.js",
+  "./js/vender-ui.js",
   "./manifest.json"
 ];
 

@@ -183,3 +183,206 @@ main {
 }
 
 .cart-pill.show { display: flex; }
+.cart-pill { border: none; cursor: pointer; font-size: 15px; }
+
+/* ---------- Botones base ---------- */
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+.btn-primary, .btn-secondary, .btn-ghost, .btn-ok, .btn-fiado {
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.btn-primary { background: var(--ink); color: #fff; }
+.btn-secondary { background: var(--mango); color: #fff; }
+.btn-ghost { background: transparent; color: var(--ink-soft); border: 1.5px solid var(--paper-dim); }
+.btn-ok { background: var(--ok); color: #fff; }
+.btn-fiado { background: var(--fiado); color: #fff; }
+
+/* ---------- Escáner ---------- */
+.reader-box {
+  display: none;
+  margin-top: 12px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #000;
+  min-height: 220px;
+}
+.reader-box.show { display: block; }
+
+/* ---------- Carrito ---------- */
+.cart-card {
+  background: #fff;
+  border-radius: var(--radius);
+  margin-top: 16px;
+  min-height: 80px;
+  overflow: hidden;
+}
+
+.cart-empty {
+  padding: 22px 16px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  text-align: center;
+}
+
+.cart-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--paper-dim);
+}
+.cart-row:last-child { border-bottom: none; }
+
+.cart-row-info { flex: 1; min-width: 0; }
+.cart-row-nombre {
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cart-row-precio { font-size: 12px; color: var(--ink-soft); }
+.cart-row-subtotal { font-size: 14px; font-weight: 600; min-width: 58px; text-align: right; }
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--paper);
+  border-radius: 999px;
+  padding: 4px 8px;
+}
+.qty-control button {
+  width: 24px; height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* ---------- Modales ---------- */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(27, 27, 47, 0.55);
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 50;
+}
+.modal-overlay.show { display: flex; }
+
+.modal-sheet {
+  background: #fff;
+  width: 100%;
+  max-width: 560px;
+  border-radius: 22px 22px 0 0;
+  padding: 22px 20px calc(22px + var(--safe-b));
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.modal-sheet h3 {
+  font-size: 19px;
+  margin-bottom: 4px;
+}
+
+.modal-sheet form label {
+  display: block;
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 12px;
+}
+.modal-sheet input {
+  width: 100%;
+  margin-top: 4px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1.5px solid var(--paper-dim);
+  font-family: var(--font-num);
+  font-size: 15px;
+}
+.form-row { display: flex; gap: 10px; }
+.form-row label { flex: 1; }
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.modal-actions button { margin-top: 0; }
+
+.checkout-total {
+  font-size: 34px;
+  font-weight: 600;
+  margin: 4px 0 16px;
+}
+
+.checkout-btns { display: flex; flex-direction: column; }
+
+.selector-companero {
+  display: none;
+  margin-top: 16px;
+  border-top: 1px solid var(--paper-dim);
+  padding-top: 14px;
+}
+.selector-companero.show { display: block; }
+
+.lista-companeros {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.companero-btn {
+  border: 1.5px solid var(--paper-dim);
+  background: var(--paper);
+  border-radius: 12px;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.saldo-chip {
+  font-size: 11px;
+  color: var(--fiado-dark);
+  font-weight: 600;
+}
+
+/* ---------- Toasts ---------- */
+.toast {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-12px);
+  background: var(--ink);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity .2s ease, transform .2s ease;
+  z-index: 100;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast-alerta { background: var(--alerta); }

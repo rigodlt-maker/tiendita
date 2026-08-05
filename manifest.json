@@ -2,7 +2,7 @@
   "name": "Tienda Indi",
   "short_name": "Tienda Indi",
   "description": "Punto de venta, deudas y reposición para la tiendita de oficina.",
-  "start_url": "./index.html",
+  "start_url": "./tienda.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#1B1B2F",
