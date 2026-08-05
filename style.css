@@ -1,0 +1,185 @@
+/* ============================================
+   TIENDA INDI — Design tokens (fijados en v1.0)
+   ============================================ */
+:root {
+  --ink: #1B1B2F;
+  --ink-soft: #34344a;
+  --paper: #F5F7F2;
+  --paper-dim: #e7ebe2;
+  --mango: #FF8A3D;
+  --mango-dark: #e6741f;
+  --fiado: #0EA5A0;
+  --fiado-dark: #0b8580;
+  --ok: #2FAE60;
+  --alerta: #E5484D;
+
+  --font-display: 'Baloo 2', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-num: 'Space Grotesk', system-ui, monospace;
+
+  --radius: 18px;
+  --nav-h: 68px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: contain;
+}
+
+body {
+  min-height: 100vh;
+  padding-bottom: calc(var(--nav-h) + var(--safe-b));
+}
+
+h1, h2, h3, .brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  margin: 0;
+}
+
+.num {
+  font-family: var(--font-num);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Header ---------- */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.app-header .brand {
+  font-size: 20px;
+  letter-spacing: 0.3px;
+}
+
+.app-header .brand span {
+  color: var(--mango);
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ok);
+  display: inline-block;
+  margin-right: 6px;
+}
+
+/* ---------- Views ---------- */
+main {
+  padding: 18px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.view { display: none; animation: fadeIn .18s ease; }
+.view.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.view h2 {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.view .subtitle {
+  color: var(--ink-soft);
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.placeholder-card {
+  background: #fff;
+  border: 1.5px dashed var(--paper-dim);
+  border-radius: var(--radius);
+  padding: 28px 18px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+/* ---------- Bottom navigation ---------- */
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(var(--nav-h) + var(--safe-b));
+  padding-bottom: var(--safe-b);
+  background: #fff;
+  border-top: 1px solid var(--paper-dim);
+  display: flex;
+  z-index: 20;
+}
+
+.nav-btn {
+  flex: 1;
+  border: none;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  padding: 6px 0;
+}
+
+.nav-btn .icon { font-size: 20px; line-height: 1; }
+
+.nav-btn.active {
+  color: var(--mango-dark);
+  font-weight: 600;
+}
+
+.nav-btn.active .icon {
+  transform: translateY(-1px) scale(1.05);
+}
+
+/* Deudas tab uses the fiado accent when active */
+.nav-btn[data-view="deudas"].active {
+  color: var(--fiado-dark);
+}
+
+/* ---------- Floating cart pill (signature element, wired up later) ---------- */
+.cart-pill {
+  position: fixed;
+  bottom: calc(var(--nav-h) + var(--safe-b) + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--mango);
+  color: #fff;
+  font-family: var(--font-num);
+  font-weight: 600;
+  padding: 12px 22px;
+  border-radius: 999px;
+  box-shadow: 0 8px 20px rgba(255, 138, 61, 0.35);
+  display: none;
+  align-items: center;
+  gap: 10px;
+  z-index: 15;
+}
+
+.cart-pill.show { display: flex; }
